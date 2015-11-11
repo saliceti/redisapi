@@ -16,6 +16,17 @@ from storage import MongoStorage
 app = flask.Flask(__name__)
 app.debug = os.environ.get('DEBUG', '0') in ('true', 'True', '1')
 
+import logging
+import sys
+
+root = logging.getLogger()
+root.setLevel(logging.DEBUG)
+
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+root.addHandler(ch)
 
 def manager_by_instance(instance):
     plans = {

@@ -11,7 +11,7 @@ import time
 
 from urlparse import urlparse
 
-from acl import access_managers
+# from acl import access_managers
 from hc import health_checkers
 from utils import get_value
 from storage import Instance, MongoStorage
