@@ -183,7 +183,7 @@ class DockerManager(DockerBase):
         port = self.get_port_by_host(host)
         logger.info("host={0} port={1}".format(
             host, port)
-        ))
+        )
         output = client.create_container(
             self.image_name,
             command="",
