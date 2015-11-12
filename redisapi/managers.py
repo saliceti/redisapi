@@ -16,6 +16,9 @@ from hc import health_checkers
 from utils import get_value
 from storage import Instance, MongoStorage
 
+import logging
+logger = logging.getLogger()
+
 
 class DockerBase(object):
 

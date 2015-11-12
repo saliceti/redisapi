@@ -12,9 +12,14 @@ from managers import SharedManager, DockerManager, DockerHaManager, FakeManager
 from plans import active as active_plans
 from storage import MongoStorage
 
+import logging
+import sys
 
 app = flask.Flask(__name__)
 app.debug = os.environ.get('DEBUG', '0') in ('true', 'True', '1')
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logger = logging.getLogger()
 
 
 def manager_by_instance(instance):
