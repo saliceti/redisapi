@@ -63,7 +63,7 @@ class DockerManagerTest(unittest.TestCase):
     def test_client_with_value(self):
         from redisapi.managers import DockerManager
         manager = DockerManager()
-        host = "http://myhost.com"
+        host = "http://myhost.com:4243"
         client = manager.client(host=host)
         self.assertEqual(client.base_url, host)
 
