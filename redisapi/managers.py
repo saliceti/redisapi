@@ -182,6 +182,17 @@ class DockerManager(DockerBase):
         client = self.client()
         host = self.extract_hostname(client.base_url)
         port = self.get_port_by_host(host)
+
+        images = client.images()
+        image_is_here = False
+        for image in images:
+            if self.image_name == image['RepoTags'][0].split(':')[0]:
+                image_is_here = True
+                break
+
+        if not image_is_here:
+            client.pull(self.image_name)
+
         output = client.create_container(
             self.image_name,
             command="",
