@@ -190,7 +190,7 @@ class DockerManager(DockerBase):
             ports=[port],
             environment={"REDIS_PORT": port},
         )
-        log.info(output)
+
         client.start(output["Id"], port_bindings={port: ('0.0.0.0', port)})
         endpoint = {"host": host, "port": port, "container_id": output["Id"]}
         instance = Instance(
