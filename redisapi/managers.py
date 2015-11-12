@@ -181,7 +181,7 @@ class DockerManager(DockerBase):
         client = self.client()
         host = self.extract_hostname(client.base_url)
         port = self.get_port_by_host(host)
-        logger.info("host={0} port={1} client.base_url={2}".format(
+        logger.info("host={0} port={1}".format(
             host, port)
         ))
         output = client.create_container(
