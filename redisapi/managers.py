@@ -16,6 +16,8 @@ from hc import health_checkers
 from utils import get_value
 from storage import Instance, MongoStorage
 
+import logging
+logger = logging.getLogger()
 
 class DockerBase(object):
 
@@ -230,6 +232,7 @@ class FakeManager(object):
         self.binded = True
 
     def unbind(self):
+        logger.info('AQUI')
         self.unbinded = True
 
     def remove_instance(self, instance):

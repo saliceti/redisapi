@@ -19,6 +19,7 @@ app.debug = os.environ.get('DEBUG', '0') in ('true', 'True', '1')
 import logging
 import sys
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logger = logging.getLogger()
 
 def manager_by_instance(instance):
     plans = {
