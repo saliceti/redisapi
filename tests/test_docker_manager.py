@@ -98,12 +98,48 @@ class DockerManagerTest(unittest.TestCase):
         client_mock = mock.Mock()
         client_mock.return_value = mock.Mock(base_url="http://localhost:4243")
         self.manager.client = client_mock
+
         self.manager.client().create_container.return_value = {"Id": "12"}
         self.manager.client().inspect_container.return_value = {
             'NetworkSettings': {
                 u'Ports': {u'6379/tcp': [{u'HostPort': u'49154'}]}}}
 
+        self.manager.client().images.return_value = [
+            {u'Created': 1446330175, u'Labels': None, u'VirtualSize': 1108935,
+                u'ParentId': u'039b63dd2cbaa10d6015ea574392530571ed8d7b174090f032211285a71881d0',
+                u'RepoTags': [u'busybox:latest'], u'RepoDigests': [],
+                u'Id': u'c51f86c283408d1749d066333f7acd5d33b053b003a61ff6a7b36819ddcbc7b7',
+                u'Size': 0}]
         instance = self.manager.add_instance("name")
+
+        self.manager.client().pull.assert_called_with(self.manager.image_name)
+        self.manager.client().pull.reset_mock()
+
+        self.manager.client().images.return_value = [
+            {u'Created': 1447094544, u'Labels': None, u'VirtualSize': 144105595,
+                u'ParentId': u'c82e8df8f302be4b88963855bf2ad684f24ce94a260f76ed5d631ca7a5883153',
+                u'RepoTags': [u'tsuru/bs:v1'], u'RepoDigests': [],
+                u'Id': u'76ed3ae479104e6c8105a2da9d83d41bbde5e04493cd38a24dad213e6fa6d8c6',
+                u'Size': 0},
+            {u'Created': 1446330175, u'Labels': None, u'VirtualSize': 1108935,
+                u'ParentId': u'039b63dd2cbaa10d6015ea574392530571ed8d7b174090f032211285a71881d0',
+                u'RepoTags': [self.manager.image_name + ':latest'], u'RepoDigests': [],
+                u'Id': u'c51f86c283408d1749d066333f7acd5d33b053b003a61ff6a7b36819ddcbc7b7',
+                u'Size': 0}]
+        instance = self.manager.add_instance("name")
+
+        assert not self.manager.client().pull.called
+        self.manager.client().pull.reset_mock()
+
+        self.manager.client().images.return_value = [
+            {u'Created': 1446330175, u'Labels': None, u'VirtualSize': 1108935,
+                u'ParentId': u'039b63dd2cbaa10d6015ea574392530571ed8d7b174090f032211285a71881d0',
+                u'RepoTags': [self.manager.image_name + ':v123'], u'RepoDigests': [],
+                u'Id': u'c51f86c283408d1749d066333f7acd5d33b053b003a61ff6a7b36819ddcbc7b7',
+                u'Size': 0}]
+        instance = self.manager.add_instance("name")
+
+        assert not self.manager.client().pull.called
 
         self.manager.client().create_container.assert_called_with(
             self.manager.image_name,
